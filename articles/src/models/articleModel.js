@@ -16,7 +16,7 @@ const articleSchema = mongoose.Schema(
         },
         restaurant : {
             type : mongoose.Schema.Types.ObjectId,
-            ref : 'Restaurant',
+            ref : 'RestaurantModel',
             required: true //TODO
         },
         image : {
