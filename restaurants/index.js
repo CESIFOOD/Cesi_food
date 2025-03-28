@@ -3,7 +3,7 @@ const app = express();
 const port = 3000;
 const mongoose = require('mongoose')
 const cors = require('cors')
-const userRoute = require('./src/routes/userRoute')
+const userRoute = require('./src/routes/restaurantRoute')
 
 const FRONTEND = "http://127.0.0.1:5173"
 
