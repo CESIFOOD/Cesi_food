@@ -11,13 +11,17 @@ const articleSchema = mongoose.Schema(
             required: true
         },
         price: {
-            type: String, 
+            type: Number, 
             required: true
         },
         restaurant : {
             type : mongoose.Schema.Types.ObjectId,
             ref : 'Restaurant',
             required: true //TODO
+        },
+        image : {
+          type : String,
+          required: false,  
         }
     }
 )
