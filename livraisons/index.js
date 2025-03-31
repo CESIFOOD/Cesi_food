@@ -16,7 +16,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 
 // Routes
-app.use('/api/livraisons', livraisonRoute);
+app.use('/livraisons', livraisonRoute);
 
 
 app.get('/',function(req, res) {

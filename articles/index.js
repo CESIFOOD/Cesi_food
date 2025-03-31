@@ -17,7 +17,7 @@ app.use(cors(corsOptions))
 
 
 // Routes 
-app.use('/api/articles', articleRoute)
+app.use('/articles', articleRoute)
 
 app.get('/',function(req, res) {
   res.status(200).json({ msg: "Welcome to the articles service" });

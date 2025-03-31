@@ -17,7 +17,7 @@ app.use(cors(corsOptions))
 
 
 // Routes
-app.use('/api/commandes', orderRoute);
+app.use('/commandes', orderRoute);
 
 app.get('/',function(req, res) {
   res.status(200).json({ msg: "Welcome to the order service" });

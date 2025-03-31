@@ -15,6 +15,11 @@ services:
       - public
       - private
       - restaurants
+      - articles
+      - menus
+      - commandes
+      - livraisons
+      - paiements
 
   public:
     build:

@@ -5,13 +5,19 @@ const articleModel = require('../models/articleModel');
 
 const getArticles = asynchHandler(async (req, res) => {
     try {
-        const articles = await ArticleModel.find({});
-        res.status(200).json(articles)
+        const { restaurant } = req.query; // Récupère le paramètre `restaurant` (id)
+
+        // Si un `restaurant` est spécifié dans la requête, on filtre par `restaurant`
+        const articles = restaurant 
+            ? await ArticleModel.find({ restaurant: restaurant }) // Filtre les articles par restaurant
+            : await ArticleModel.find({}); // Sinon, retourne tous les articles
+        res.status(200).json(articles);
     } catch (error) {
         res.status(500);
-        throw new Error(error.message)
+        throw new Error(error.message); 
     }
-})
+});
+
 
 const getArticle = asynchHandler(async (req, res) => {
     try {

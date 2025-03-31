@@ -17,7 +17,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 
 // Routes
-app.use('/api/menus', menuRoute);
+app.use('/menus', menuRoute);
 
 app.get('/',function(req, res) {
   res.status(200).json({ msg: "Welcome to the menu service" });
