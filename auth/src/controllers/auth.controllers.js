@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user.model');
 const sequelize = require("../../config/config");
+require('dotenv').config();
 
 // Synchroniser la base de données au démarrage
 sequelize.sync();
@@ -43,7 +44,7 @@ exports.login = async (req, res) => {
         }
 
         // Générer les tokens
-        const accessToken = jwt.sign({ username: user.username, role: user.role }, process.env.JWT_KEY, { expiresIn: "1h" });
+        const accessToken = jwt.sign({ username: user.username, role: user.role }, "JWT", { expiresIn: "1h" });
         const refreshToken = jwt.sign({ username: user.username, role: user.role }, process.env.JWT_REFRESH_KEY, { expiresIn: "7d" });
 
         // Enregistrer le refresh token dans la BDD
@@ -58,18 +59,24 @@ exports.login = async (req, res) => {
 };
 
 exports.authenticate = async (req, res) => {
+    console.log(req.headers)
+
     const authHeader = req.headers["authorization"];
     if (!authHeader) {
         return res.status(401).json({ msg: "Authorization header is missing." });
     }
+    console.log(authHeader)
 
     const token = authHeader.split(" ")[1];
+    console.log(token)
     if (!token) {
         return res.status(401).json({ msg: "Token is missing." });
     }
-
+    
     try {
-        const decoded = jwt.verify(token, process.env.JWT_KEY);
+        const decoded = jwt.verify(token, "JWT");
+
+
         const user = await User.findOne({ where: { username: decoded.username } });
 
         if (!user) {
@@ -77,10 +84,12 @@ exports.authenticate = async (req, res) => {
         }
 
         res.setHeader("X-User-Role", user.role);
+        // return res.status(200).json({ msg: "Token verified successfully."})
         return res.status(200).json({ msg: "Token verified successfully.", user: { username: user.username }, role: user.role });
     } catch (err) {
         return res.status(403).json({ msg: "Invalid or expired token." });
     }
+    return res.send({authHeader})
 };
 
 
@@ -124,7 +133,7 @@ exports.authenticate = async (req, res) => {
 //     // Génération d'un jeton d'accès (JWT) pour l'utilisateur, valide pendant 1 heure
 //     const accessToken = jwt.sign(
 //         { username: user.username, role : user.role },
-//         process.env.JWT_KEY, // Clé secrète pour signer le token (devrait être définie dans les variables d'environnement)
+//         "JWT", // Clé secrète pour signer le token (devrait être définie dans les variables d'environnement)
 //         { expiresIn: "1h" } // Durée de validité du token d'accès (1 heure)
 //     );
 
@@ -163,7 +172,7 @@ exports.authenticate = async (req, res) => {
 //     }
     
 //     // Vérification du token avec la clé secrète pour valider sa signature
-//     jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+//     jwt.verify(token, "JWT", (err, decoded) => {
 //         if (err) {
 //             return res.status(403).json({ msg: "Invalid or expired token." }); // Si le token est invalide ou expiré
 //         }

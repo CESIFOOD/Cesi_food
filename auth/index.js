@@ -1,9 +1,10 @@
-// require('dotenv').config();
+require('dotenv').config();
+
 const express = require('express')
 const app = express()
 app.use(express.json())
 const cors = require('cors')
-
+const port = 3000;
 // app.use(express.urlencoded({extended:true}))
 const corsOptions = {
     origin: "*", // L'origine de ton frontend
@@ -14,7 +15,13 @@ app.use(cors(corsOptions));
   
 
 require('./src/routes/auth.routes')(app);
-const port = 3000;
+
+app.get('/louis',(req, res) => {
+    const authHeader = req.headers["authorization"];
+    console.log(authHeader)
+    res.send('HELLO WORLD')
+})
+
 
 app.get('/',(req, res) => {
     res.send('HELLO WORLD')
