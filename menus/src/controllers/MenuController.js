@@ -1,8 +1,9 @@
 const express = require('express')
 const MenuModel = require('../models/menuModel')
 const asynchHandler = require('express-async-handler');
+const mongoose = require("mongoose")
 
-const getMenus = asynchHandler(async(req, res) => {
+const getMenus = asynchHandler(async (req, res) => {
     try {
         const menus = await MenuModel.find({});
         res.status(200).json(menus)
@@ -12,9 +13,9 @@ const getMenus = asynchHandler(async(req, res) => {
     }
 })
 
-const getMenu = asynchHandler(async(req, res) => {
+const getMenu = asynchHandler(async (req, res) => {
     try {
-        const {id} = req.params
+        const { id } = req.params
         const menu = await MenuModel.findById(id)
         if (!menu) {
             res.status(404);
@@ -28,11 +29,11 @@ const getMenu = asynchHandler(async(req, res) => {
     }
 })
 
-const putMenu = asynchHandler(async(req, res) => {
+const putMenu = asynchHandler(async (req, res) => {
     try {
-        const {id} = req.params;
-        const menu = await MenuModel.findByIdAndUpdate(id, req.body, {new :true});
-        if(!menu) {
+        const { id } = req.params;
+        const menu = await MenuModel.findByIdAndUpdate(id, req.body, { new: true });
+        if (!menu) {
             res.status(404).json(`cannot find any menu with the id : ${id} `);
         }
         res.status(200).json(menu)
@@ -42,11 +43,11 @@ const putMenu = asynchHandler(async(req, res) => {
     }
 })
 
-const deleteMenu = asynchHandler(async(req, res) => {
+const deleteMenu = asynchHandler(async (req, res) => {
     try {
-        const {id} = req.params
+        const { id } = req.params
         const menu = await MenuModel.findByIdAndDelete(id)
-        if(!menu) {
+        if (!menu) {
             res.status(404).json(`couldn't find any menu with id : ${id}`)
         }
         const udpdatedMenu = await MenuModel.findById(id)
@@ -57,8 +58,14 @@ const deleteMenu = asynchHandler(async(req, res) => {
     }
 })
 
-const createMenu = asynchHandler(async(req, res) => {
+const createMenu = asynchHandler(async (req, res) => {
     try {
+        console.log(" Données reçues par le backend :", req.body); // DEBUG
+        // const articleIds = req.body.articles.map(id => new mongoose.Schema.Types.ObjectId(id));
+        // const menu = await MenuModel.create({
+        //     ...req.body,
+        //     articles: articleIds // On enregistre les IDs convertis
+        // });
         const menu = await MenuModel.create(req.body)
         res.status(200).json(menu)
     } catch (error) {

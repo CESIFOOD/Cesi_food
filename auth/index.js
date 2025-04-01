@@ -1,12 +1,20 @@
-require('dotenv').config();
+// require('dotenv').config();
 const express = require('express')
 const app = express()
 app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+const cors = require('cors')
+
+// app.use(express.urlencoded({extended:true}))
+const corsOptions = {
+    origin: "*", // L'origine de ton frontend
+    // methods: ["GET", "POST", "PUT", "DELETE"], 
+  };
+  
+app.use(cors(corsOptions));
+  
 
 require('./src/routes/auth.routes')(app);
-
-const port = process.env.PORT;
+const port = 3000;
 
 app.get('/',(req, res) => {
     res.send('HELLO WORLD')

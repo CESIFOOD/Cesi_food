@@ -14,8 +14,11 @@ const menusSchema = mongoose.Schema (
             type : mongoose.Schema.Types.ObjectId,
             ref : 'RestaurantModel'
         },
-        article : [{
-            type : mongoose.Schema.ObjectId,
+        image : {
+            type : String,
+        },
+        articles : [{
+            type : mongoose.Schema.Types.ObjectId,
             ref : 'ArticleModel'
         }]
 

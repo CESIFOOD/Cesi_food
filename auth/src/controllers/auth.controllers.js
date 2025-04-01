@@ -8,20 +8,25 @@ sequelize.sync();
 
 exports.register = async (req, res) => {
     try {
+        console.log('1');
         const { username, password, role } = req.body;
-
+        console.log('Données reçues:', req.body);
         // Vérifier si l'utilisateur existe déjà
         const existingUser = await User.findOne({ where: { username } });
+        console.log('2');
         if (existingUser) {
+            console.log('3');
             return res.status(400).json({ msg: "Username already exists." });
         }
 
         // Hacher le mot de passe et enregistrer dans PostgreSQL
         const hashedPassword = bcrypt.hashSync(password, 10);
+        console.log(`Tentative d'enregistrement: ${username}, ${role}`);
         const newUser = await User.create({ username, password: hashedPassword, role: role || "user" });
-
+        console.log('4');
         res.status(201).json({ msg: "User registered successfully", user: newUser });
     } catch (error) {
+        console.log('5');
         console.error(error);
         res.status(500).json({ msg: "Error during registration." });
     }
