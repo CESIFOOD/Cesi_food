@@ -5,16 +5,15 @@ const mongoose = require('mongoose')
 const menuRoute = require('./src/routes/menuRoute')
 const cors = require('cors')
 
-// express prend les requêtes en JSON
-app.use (express.json())
-
 const corsOptions = {
   origin: "*", // Accès du back-end pour les domaines ci-contre
   optionsSuccessStatus: 200
 }
-
 // Autoriser la l'accès au back-end (CORS POLICY)
 app.use(cors(corsOptions))
+
+// express prend les requêtes en JSON
+app.use (express.json())
 
 // Routes
 app.use('/menus', menuRoute);

@@ -13,9 +13,15 @@ const commandesSchema = mongoose.Schema(
         article: [{
             article: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "ArticleModel"
+                ref: "ArticleModel",
+                
             },
-            quantity: Number
+            quantity: {
+                type: Number,
+                required: true,
+                default: 1, // 🔹 Valeur par défaut
+                min: 1, // 🔹 Assure que la quantité est toujours ≥ 1
+              },
         }],  
         totalPrice: {
             type: Number,
@@ -24,7 +30,7 @@ const commandesSchema = mongoose.Schema(
             type : String,
             enum: ['en validation', 'en préparation', 'livraison en cours', 'livré'], default: 'en validation'
         }
-    }
-)
+    }, { timestamps: true }
+);
 
 module.exports = mongoose.model('CommandeModel', commandesSchema)

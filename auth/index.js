@@ -1,24 +1,22 @@
 require('dotenv').config();
-
 const express = require('express')
+const cors = require('cors')
+
+
 const app = express()
 app.use(express.json())
-const cors = require('cors')
 const port = 3000;
 // app.use(express.urlencoded({extended:true}))
-const corsOptions = {
+
+  
+app.use(cors({
     origin: "*", // L'origine de ton frontend
     // methods: ["GET", "POST", "PUT", "DELETE"], 
-  };
+  }));
   
-app.use(cors(corsOptions));
-  
-
 require('./src/routes/auth.routes')(app);
 
 app.get('/louis',(req, res) => {
-    const authHeader = req.headers["authorization"];
-    console.log(authHeader)
     res.send('HELLO WORLD')
 })
 

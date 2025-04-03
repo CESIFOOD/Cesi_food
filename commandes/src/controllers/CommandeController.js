@@ -32,6 +32,7 @@ const getOrder = asyncHandler(async (req, res) => {
 
 // Créer une commande
 const createOrder = asyncHandler(async (req, res) => {
+    console.log(`Données reçu pour la commande : ${req.body}`)
     try {
         const { userId, restaurant, article, totalPrice } = req.body;
 
