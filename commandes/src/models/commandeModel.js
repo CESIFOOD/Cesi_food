@@ -19,8 +19,8 @@ const commandesSchema = mongoose.Schema(
             quantity: {
                 type: Number,
                 required: true,
-                default: 1, // 🔹 Valeur par défaut
-                min: 1, // 🔹 Assure que la quantité est toujours ≥ 1
+                default: 1, 
+                min: 1, 
               },
         }],  
         totalPrice: {
@@ -28,7 +28,11 @@ const commandesSchema = mongoose.Schema(
         },
         status : {
             type : String,
-            enum: ['en validation', 'en préparation', 'livraison en cours', 'livré'], default: 'en validation'
+            enum: ['en validation', 'en préparation', 'livraison en cours', 'livré', 'refusé'], default: 'en validation'
+        },
+        livreurId: {
+            type: String,
+            required: false, 
         }
     }, { timestamps: true }
 );

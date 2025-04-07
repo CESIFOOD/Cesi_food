@@ -21,6 +21,10 @@ const restaurantsSchema = mongoose.Schema(
         description : {
             type : String,
             required : false
+        },
+        userId : {
+            type : String,
+            required : true
         }
     }   
 )
