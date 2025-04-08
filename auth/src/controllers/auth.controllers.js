@@ -138,3 +138,43 @@ exports.updateUser = async (req, res) => {
     }
 };
 
+exports.getUsers = async (req, res) => {
+    try {
+        const users = await User.findAll(); // Récupère tous les utilisateurs
+        res.status(200).json(users);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error fetching users." });
+    }
+};
+
+exports.getUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findByPk(id);
+        if (!user) {
+            return res.status(404).json({ msg: "User not found." });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error fetching user." });
+    }
+};
+
+exports.suspendUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findByPk(id);
+        if (!user) {
+            return res.status(404).json({ msg: "User not found." });
+        }
+        user.suspended = true;
+        await user.save();
+        res.status(200).json({ msg: "User suspended successfully." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error suspending user." });
+    }
+};
+

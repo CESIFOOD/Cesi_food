@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express')
 const cors = require('cors')
-
+const sequelize = require('./config/config');
 
 const app = express()
 app.use(express.json())
@@ -16,14 +16,14 @@ app.use(cors({
   
 require('./src/routes/auth.routes')(app);
 
-app.get('/louis',(req, res) => {
-    res.send('HELLO WORLD')
-})
+// Synchroniser la base de données pour ajouter la colonne "suspended"
+sequelize.sync({ alter: true }).then(() => {
+    console.log("Base de données synchronisée avec succès.");
+}).catch((error) => {
+    console.error("Erreur lors de la synchronisation de la base de données :", error);
+});
 
 
-app.get('/',(req, res) => {
-    res.send('HELLO WORLD')
-})
 
 app.listen(port, () => {
     console.log(`Louis écoute sur le port ${port}`)
