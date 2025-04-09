@@ -36,6 +36,10 @@ exports.login = async (req, res) => {
         if (!user || !bcrypt.compareSync(password, user.password)) {
             return res.status(401).json({ msg: "Invalid username or password." });
         }
+        
+        if (user.suspended) {
+            return res.status(403).json({ msg: "User is suspended." });
+        }
 
         // Générer les tokens
         const accessToken = jwt.sign({ username: user.username, role: user.role }, "JWT", { expiresIn: "1h" });
@@ -110,9 +114,35 @@ exports.deleteUser = async (req, res) => {
     }
 };
 
+exports.deleteUserByUsername = async (req, res) => {
+    // const { username } = req.body;  // On récupère directement 'username' dans req.body
+    const {username} = req.params
+    console.log(req.body);
+    console.log(username);
+
+    try {
+        // Recherche de l'utilisateur par son 'username'
+        const user = await User.findOne({ where: { username } });
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // Suppression de l'utilisateur trouvé
+        await user.destroy();
+
+        res.status(200).json({ msg: 'User deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: 'Error during deletion' });
+    }
+};
+
 
 exports.updateUser = async (req, res) => {
-    const { username, newPassword, newRole } = req.body;
+    const { username } = req.params
+
+    const { newPassword, newRole } = req.body;
 
     try {
         const user = await User.findOne({ where: { username } });
@@ -170,6 +200,22 @@ exports.suspendUser = async (req, res) => {
             return res.status(404).json({ msg: "User not found." });
         }
         user.suspended = true;
+        await user.save();
+        res.status(200).json({ msg: "User suspended successfully." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error suspending user." });
+    }
+};
+
+exports.unsuspendUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findByPk(id);
+        if (!user) {
+            return res.status(404).json({ msg: "User not found." });
+        }
+        user.suspended = false;
         await user.save();
         res.status(200).json({ msg: "User suspended successfully." });
     } catch (error) {

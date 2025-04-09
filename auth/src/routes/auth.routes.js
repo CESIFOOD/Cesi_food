@@ -8,8 +8,9 @@ module.exports = function(app) {
     app.put("/update", authController.updateUser);
 
     app.get("/users", authController.getUsers);
-    // app.get("/users/:id", authController.getUser);
-    // app.delete("/users/:id", authController.deleteUser);
-    // app.put("/users/:id", authController.updateUser);
-    // app.put("/users/:id/suspend", authController.suspendUser);
+    app.get("/users/:username", authController.getUser);
+    app.delete("/users/:username", authController.deleteUserByUsername);
+    app.put("/users/:username", authController.updateUser);
+    app.put("/users/:id/suspend", authController.suspendUser);
+    app.put("/users/:id/unsuspend", authController.unsuspendUser);
 }
