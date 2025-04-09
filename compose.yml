@@ -6,6 +6,7 @@ services:
     container_name: gateway 
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf 
+      - ./composant/uploads:/app/uploads
     ports:
       - "8080:8080"
     networks:
@@ -15,6 +16,13 @@ services:
       - public
       - private
       - restaurants
+      - articles
+      - menus
+      - commandes
+      - livraisons
+      - paiements
+      - components
+      - logs
 
   public:
     build:
@@ -36,6 +44,27 @@ services:
     networks:
       - app-network
 
+  logs:
+    build:
+      context: ./logs
+      dockerfile: Dockerfile
+    container_name: logs-service
+    ports:
+      - "3009:3000"
+    networks:
+      - app-network
+
+  components:
+    build:
+      context: ./composant
+      dockerfile: Dockerfile
+    container_name: components-service
+    ports:
+      - "3010:3000"
+    networks:
+      - app-network
+    volumes:
+      - ./composant/uploads:/app/uploads # Assurez-vous que ce chemin est correct
 
   articles:
     build:

@@ -1,12 +1,4 @@
-// class User {
-//     constructor(username, password, role) {
-//         this.username = username;
-//         this.password = password;
-//         this.role = role;
-//     }
-// }
 
-// module.exports = User 
 
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/config");
@@ -34,7 +26,11 @@ const User = sequelize.define("User", {
     refreshToken: {
         type: DataTypes.STRING,
         allowNull: true,
-    }
+    },
+    suspended: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
 }, {
     timestamps: false
 });

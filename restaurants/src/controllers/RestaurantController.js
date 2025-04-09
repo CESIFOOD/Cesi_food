@@ -12,6 +12,7 @@ const getRestaurants = asynchHandler(async(req, res) => {
     }
 })
 
+
 const getRestaurant = asynchHandler(async(req, res) => {
     try {
         const {id} = req.params
